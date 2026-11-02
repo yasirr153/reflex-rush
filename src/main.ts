@@ -132,4 +132,10 @@ app.addEventListener('click',(event)=>{const target=event.target as HTMLElement;
 });
 app.addEventListener('pointerdown',(event)=>{const target=event.target as HTMLElement;if(mode?.id==='quick'&&target.closest('#quick-target'))handleQuickTap();},{passive:true});
 app.addEventListener('keydown',(event)=>{if((event.code==='Space'||event.code==='Enter')&&mode?.id==='quick'&&phase==='playing'){const active=document.activeElement;if(active===document.body||active===document.documentElement){event.preventDefault();handleQuickTap();}}});
-renderHome();
+const initialMode = new URLSearchParams(window.location.search).get('mode') as ModeId | null;
+if (initialMode && modes.some(m => m.id === initialMode)) {
+  mode = modes.find(m => m.id === initialMode) || null;
+  renderIntro();
+} else {
+  renderHome();
+}
