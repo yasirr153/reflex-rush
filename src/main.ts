@@ -1,3 +1,5 @@
+import { trackEvent } from './game/Analytics';
+
 type ModeId = 'quick' | 'colour' | 'fake' | 'survival' | 'memory';
 type Phase = 'home' | 'intro' | 'playing' | 'feedback' | 'result';
 interface Mode { id: ModeId; icon: string; name: string; tagline: string; detail: string; }
@@ -45,6 +47,10 @@ function shell(content: string, subtitle: string) {
 function startMode() {
   clearTimers(); phase = 'playing'; score = 0; lives = 3; round = 0; misses = 0; signalCount = 0; targetCount = 0; sequence = []; sequenceIndex = 0;
   if (!mode) return;
+  trackEvent('game_start', {
+  game_mode: mode.id,
+  game_name: mode.name
+});
   if (mode.id === 'quick') quickRound();
   if (mode.id === 'colour') startColour();
   if (mode.id === 'fake') startFake();
@@ -80,9 +86,43 @@ function showSequence(index:number){phase='playing';const c=sequence[index];shel
 function memoryInput(){phase='playing';sequenceIndex=0;shell(`<div class="memory-display"><div class="memory-count">REPEAT THE SEQUENCE</div><div class="memory-progress" id="memory-progress">0 / ${sequence.length}</div><div class="memory-pad">${palette.map(c=>`<button class="memory-key tile-${c}" data-memory="${c}" aria-label="${c}"></button>`).join('')}</div><small>Tap the colours in the same order.</small></div>`, 'MEMORY RECALL');}
 function handleMemory(c:string){if(phase!=='playing')return;if(sequence[sequenceIndex]!==c){lives--;if(lives<=0){finish('MEMORY OVERLOAD');return;}showFeedback('NOT QUITE!', 'One mistake. Watch the sequence again.', '✕');timer=setTimeout(()=>showSequence(0),950);return;}sequenceIndex++;const p=$('#memory-progress');if(p)p.textContent=`${sequenceIndex} / ${sequence.length}`;if(sequenceIndex===sequence.length){scoreUpdate(sequence.length*250);if(sequence.length>=8){finish('MEMORY CHAMPION');return;}showFeedback('PERFECT MEMORY!', `+${sequence.length*250} POINTS`, '🧠');sequence.push(palette[Math.floor(Math.random()*palette.length)]);timer=setTimeout(()=>showSequence(0),900);}}
 function showFeedback(title:string,desc:string,icon:string){phase='feedback';shell(`<div class="feedback-panel"><div>${icon}</div><h2>${title}</h2><p>${desc}</p></div>`, 'NICE TRY');}
-function finish(title:string){clearTimers();phase='result';const previousBest=best;saveBest();const newBest=score>previousBest;app.innerHTML=`<main class="play-shell result-shell"><header class="play-top"><button class="back-btn" data-action="home">← ARCADE</button><div class="mini-brand">REFLEX<span>RUSH</span></div><span class="mode-chip">${mode?.icon} ${mode?.name}</span></header><section class="result-panel"><div class="result-confetti">✦ ✧ ✦</div><div class="eyebrow">CHALLENGE COMPLETE</div><h1>${title}</h1><div class="final-score">${score.toLocaleString()}<small>PTS</small></div><p>${newBest?'NEW PERSONAL BEST!':'YOUR BEST: '+best.toLocaleString()}</p><div class="result-actions"><button class="launch-btn" data-action="replay">PLAY AGAIN ↻</button><button class="secondary-btn" data-action="home">BACK TO ARCADE</button><button class="secondary-btn" data-action="share">SHARE SCORE ↗</button></div></section></main>`;}
+function finish(title:string){clearTimers();phase='result';const previousBest=best;saveBest();const newBest=score>previousBest;if (mode) {
+  trackEvent('game_complete', {
+    game_mode: mode.id,
+    game_name: mode.name,
+    score: score,
+    new_personal_best: newBest
+  });
+}app.innerHTML=`<main class="play-shell result-shell"><header class="play-top"><button class="back-btn" data-action="home">← ARCADE</button><div class="mini-brand">REFLEX<span>RUSH</span></div><span class="mode-chip">${mode?.icon} ${mode?.name}</span></header><section class="result-panel"><div class="result-confetti">✦ ✧ ✦</div><div class="eyebrow">CHALLENGE COMPLETE</div><h1>${title}</h1><div class="final-score">${score.toLocaleString()}<small>PTS</small></div><p>${newBest?'NEW PERSONAL BEST!':'YOUR BEST: '+best.toLocaleString()}</p><div class="result-actions"><button class="launch-btn" data-action="replay">PLAY AGAIN ↻</button><button class="secondary-btn" data-action="home">BACK TO ARCADE</button><button class="secondary-btn" data-action="share">SHARE SCORE ↗</button></div></section></main>`;}
 app.addEventListener('click',(event)=>{const target=event.target as HTMLElement;const button=target.closest<HTMLElement>('button');if(!button)return;
- const action=button.dataset.action; if(action==='home'){renderHome();return;} if(action==='start'){startMode();return;} if(action==='replay'){renderIntro();return;} if(action==='signal'){handleSignal();return;} if(action==='hit'){hitTarget();return;} if(action==='share'){const text=`I scored ${score} points in ${mode?.name} on REFLEX RUSH. Can you beat me?`;if(navigator.share)navigator.share({title:'REFLEX RUSH',text}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(text).then(()=>button.textContent='COPIED!');return;}
+ const action=button.dataset.action; if(action==='home'){renderHome();return;} if(action==='start'){startMode();return;} if(action==='replay'){renderIntro();return;} if(action==='signal'){handleSignal();return;} if(action==='hit'){hitTarget();return;} if (action === 'share') {
+  const text = `I scored ${score} points in ${mode?.name} on REFLEX RUSH. Can you beat me?`;
+
+  if (navigator.share) {
+    navigator.share({
+      title: 'REFLEX RUSH',
+      text
+    }).then(() => {
+      trackEvent('share_score', {
+        game_mode: mode?.id ?? 'unknown',
+        share_method: 'native'
+      });
+    }).catch(() => {});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        button.textContent = 'COPIED!';
+
+        trackEvent('share_score', {
+          game_mode: mode?.id ?? 'unknown',
+          share_method: 'clipboard'
+        });
+      })
+      .catch(() => {});
+  }
+
+  return;
+}
  if(button.dataset.mode){mode=modes.find(m=>m.id===button.dataset.mode as ModeId)||null;renderIntro();return;} if(button.dataset.colour){handleColour(button.dataset.colour);return;} if(button.dataset.memory){handleMemory(button.dataset.memory);return;} if(mode?.id==='quick'&&button.id==='quick-target')handleQuickTap();
 });
 app.addEventListener('pointerdown',(event)=>{const target=event.target as HTMLElement;if(mode?.id==='quick'&&target.closest('#quick-target'))handleQuickTap();},{passive:true});
