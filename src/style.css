@@ -3,7 +3,7 @@
    Design system: dark arcade aesthetic, vibrant accent, minimal UI
    ═══════════════════════════════════════════════════════════════════════ */
 
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
 
 /* ─── Design Tokens ────────────────────────────────────────────────────────── */
 :root {
@@ -30,8 +30,8 @@
   --col-false-accent: #ef4444;
 
   /* Typography */
-  --font-display: 'Syne', sans-serif;
-  --font-body:    'Inter', sans-serif;
+  --font-display: 'Manrope', 'Segoe UI', sans-serif;
+  --font-body:    'DM Sans', 'Segoe UI', sans-serif;
 
   /* Spacing */
   --radius:      16px;
@@ -913,3 +913,297 @@ body {
 @keyframes target-pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}@keyframes memory-pop{0%{transform:scale(.65);opacity:.3}45%{transform:scale(1.05);opacity:1}100%{transform:scale(1);opacity:1}}@keyframes wrong-shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
 @media(max-width:650px){.mode-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.mode-card,.mode-card:nth-child(4){grid-column:auto;min-height:160px;padding:16px}.mode-card:last-child{grid-column:1/-1;min-height:135px}.hero-copy{padding:45px 0 28px}.arcade-footer{font-size:.52rem}.arena{min-height:400px}.play-top{flex-wrap:wrap}.mode-chip{font-size:.6rem}}
 @media(max-width:380px){.brand-name{font-size:.85rem}.best-pill{font-size:.6rem}.mode-name{font-size:.85rem}.mode-tagline{font-size:.7rem}.arena{padding:15px}.memory-pad{grid-template-columns:repeat(4,56px)}.memory-key{width:56px}}
+
+/* REFLEX RUSH — visual polish and upgraded arcade feedback */
+.hero-copy{position:relative;isolation:isolate}.hero-copy:after{content:"";position:absolute;z-index:-1;right:2%;top:4%;width:clamp(150px,24vw,270px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#8b5cf633,transparent 68%);filter:blur(8px);pointer-events:none}
+.hero-stats{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}.hero-stats span{display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid var(--border);border-radius:10px;background:#151421;color:#8e89a8;font-size:.59rem;font-weight:800;letter-spacing:.1em}.hero-stats b{color:#c4b5fd;font:800 .9rem var(--font-display)}
+.mode-card{box-shadow:0 12px 35px #0002}.mode-card:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 25%,#ffffff08 50%,transparent 75%);transform:translateX(-110%);transition:transform .55s}.mode-card:hover:before{transform:translateX(110%)}.mode-card:focus-visible,.launch-btn:focus-visible,.secondary-btn:focus-visible,.colour-tile:focus-visible,.memory-key:focus-visible{outline:3px solid #c4b5fd;outline-offset:4px}
+.arena{box-shadow:0 24px 80px #0005, inset 0 1px #ffffff08}.arena-meta{align-items:center}.score-live{padding:7px 11px;background:#a78bfa14;border:1px solid #a78bfa30;border-radius:99px;color:#c4b5fd}.game-stats{flex-wrap:wrap;padding:12px 14px;background:#0c0b13;border:1px solid var(--border);border-radius:12px}.game-stats span{white-space:nowrap}.quick-target,.signal-button{transition:transform .18s,border-color .18s,box-shadow .18s}.quick-target:active,.signal-button:active{transform:scale(.99)}.colour-tile,.memory-key{min-width:0;min-height:76px}.colour-tile:hover,.memory-key:hover{filter:brightness(1.12);transform:translateY(-3px)}.pop-target{touch-action:manipulation}.survival-field{min-height:310px;background-image:linear-gradient(#ffffff06 1px,transparent 1px),linear-gradient(90deg,#ffffff06 1px,transparent 1px),linear-gradient(135deg,#111c2a,#151327);background-size:28px 28px,28px 28px,auto}
+.result-panel{width:100%}.performance-rating{display:inline-flex;margin:8px auto 0;padding:9px 14px;border:1px solid #a78bfa44;border-radius:99px;background:#a78bfa12;color:#d3c4ff!important}.result-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:28px 0 18px}.result-stat{padding:16px 10px;border:1px solid var(--border);border-radius:14px;background:linear-gradient(145deg,#1b1929,#11111a);display:flex;flex-direction:column;gap:8px}.result-stat span{font-size:.58rem;line-height:1.5;letter-spacing:.1em;color:#8f8aa8;font-weight:800}.result-stat b{font:800 clamp(1.2rem,4vw,1.8rem) var(--font-display);color:#f6f2ff}.result-stat b small{font:600 .55em var(--font-body);color:#a78bfa}.best-line{margin-top:12px;color:#8f8aa8;font-size:.68rem;letter-spacing:.12em;font-weight:800}.result-actions .launch-btn{min-width:190px}.secondary-btn{transition:transform .16s,border-color .16s,background .16s}.secondary-btn:hover{transform:translateY(-2px);background:#28233d}
+@media(max-width:600px){.hero-stats{gap:7px}.hero-stats span{font-size:.52rem;padding:8px}.result-stats{grid-template-columns:1fr;gap:8px}.result-stat{flex-direction:row;align-items:center;justify-content:space-between;padding:12px 14px}.result-stat span{max-width:60%}.result-actions{flex-direction:column}.result-actions button{width:100%}.arcade-header{gap:8px}.brand-name{font-size:.9rem}.arena{gap:18px}.game-stats{font-size:.58rem}}
+@media(prefers-reduced-motion:reduce){.mode-card:before{display:none}}
+
+
+/* =========================================================
+   REFLEX RUSH — typography and interface refinement
+   Cleaner typography, calmer tracking, clearer hierarchy.
+   ========================================================= */
+:root {
+  --bg: #090b12;
+  --surface: #111521;
+  --surface-2: #171e2d;
+  --border: rgba(190, 199, 226, .12);
+  --text: #f4f6fc;
+  --text-muted: #a3acc1;
+  --text-faint: rgba(210, 218, 237, .48);
+  --accent: #8b7bff;
+  --accent-2: #b8adff;
+  --accent-glow: rgba(139, 123, 255, .22);
+  --radius: 18px;
+}
+
+html { font-family: var(--font-body); }
+body {
+  background:
+    radial-gradient(ellipse at 50% -18%, rgba(100, 87, 190, .19), transparent 42%),
+    #090b12;
+  font-family: var(--font-body);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+button, input, textarea { font: inherit; }
+.arcade-home, .play-shell { max-width: 1120px; }
+.arcade-home { padding-top: 28px; padding-bottom: 34px; }
+.arcade-header, .play-top {
+  padding-bottom: 20px;
+  border-color: rgba(190, 199, 226, .13);
+}
+.brand-name, .mini-brand {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: -.035em;
+}
+.best-pill, .mode-chip {
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: #c3c9d9;
+  background: rgba(24, 29, 44, .88);
+  border-color: rgba(190, 199, 226, .14);
+}
+.hero-copy { padding: clamp(48px, 8vh, 82px) 0 42px; }
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .105em;
+  color: #b9adff;
+}
+.hero-copy h1, .intro-panel h1, .result-panel h1 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -.065em;
+  line-height: .98;
+}
+.hero-copy h1 { font-size: clamp(3.2rem, 8.2vw, 6.1rem); }
+.hero-copy h1 em {
+  color: #b6aaff;
+  text-shadow: 0 8px 38px rgba(139, 123, 255, .22);
+}
+.hero-copy p {
+  max-width: 560px;
+  color: #aeb7ca;
+  font-size: clamp(1rem, 1.5vw, 1.12rem);
+  line-height: 1.7;
+  margin-top: 20px;
+}
+.section-heading {
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .075em;
+  color: #c3c9d9;
+}
+.mode-grid { gap: 14px; }
+.mode-card {
+  min-height: 194px;
+  padding: 22px;
+  border-radius: 19px;
+  background: linear-gradient(150deg, rgba(25, 31, 47, .98), rgba(15, 19, 30, .98));
+  border-color: rgba(190, 199, 226, .13);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, .18);
+  gap: 9px;
+}
+.mode-card:hover {
+  border-color: rgba(166, 151, 255, .62);
+  background: linear-gradient(150deg, #22243a, #141a29);
+}
+.mode-number {
+  font-family: var(--font-body);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: #7e89a3;
+}
+.mode-icon { font-size: 1.9rem; }
+.mode-name {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 800;
+  letter-spacing: -.025em;
+  line-height: 1.2;
+}
+.mode-tagline {
+  font-family: var(--font-body);
+  font-size: .88rem;
+  line-height: 1.45;
+  color: #aab4c9;
+}
+.mode-arrow { color: #b8adff; }
+.arcade-footer {
+  font-family: var(--font-body);
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .045em;
+  color: #77829b;
+}
+.back-btn {
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .015em;
+  color: #c0c8d9;
+  background: rgba(24, 29, 44, .7);
+  border-color: rgba(190, 199, 226, .14);
+  padding: 10px 15px;
+}
+.intro-panel { max-width: 640px; }
+.intro-panel h1 { font-size: clamp(2.7rem, 7vw, 4.6rem); }
+.intro-panel p {
+  max-width: 500px;
+  color: #aeb7ca;
+  font-size: 1.05rem;
+  line-height: 1.75;
+}
+.rule-pills span {
+  font-family: var(--font-body);
+  font-size: .76rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: #c5cce0;
+  background: rgba(25, 31, 47, .8);
+  border-color: rgba(190, 199, 226, .13);
+}
+.launch-btn, .secondary-btn {
+  font-family: var(--font-body);
+  font-size: .92rem;
+  font-weight: 700;
+  letter-spacing: .005em;
+  border-radius: 13px;
+}
+.launch-btn {
+  background: linear-gradient(135deg, #c0b5ff, #9584ff);
+  box-shadow: 0 10px 30px rgba(139, 123, 255, .2);
+}
+.launch-btn:hover { background: linear-gradient(135deg, #d0c8ff, #a99cff); }
+.intro-panel > small {
+  font-family: var(--font-body);
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .055em;
+}
+.arena {
+  background: linear-gradient(145deg, rgba(22, 28, 43, .98), rgba(13, 17, 27, .98));
+  border-color: rgba(190, 199, 226, .14);
+  border-radius: 24px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .28), inset 0 1px rgba(255,255,255,.035);
+}
+.arena-meta, .game-stats {
+  font-family: var(--font-body);
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .045em;
+  color: #9ca8bf;
+}
+.score-live {
+  color: #d1caff;
+  background: rgba(139, 123, 255, .1);
+  border-color: rgba(139, 123, 255, .23);
+}
+.quick-target, .signal-button {
+  border-radius: 22px;
+}
+.quick-target .target-core, .signal-button span {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -.045em;
+}
+.quick-target small, .memory-display small {
+  font-family: var(--font-body);
+  font-size: .76rem;
+  font-weight: 600;
+  letter-spacing: .075em;
+}
+.challenge-instruction {
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+  font-weight: 800;
+  letter-spacing: -.025em;
+}
+.field-count, .memory-count {
+  font-family: var(--font-body);
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .055em;
+}
+.play-hint {
+  font-family: var(--font-body);
+  color: #8995ad;
+  font-size: .85rem;
+  line-height: 1.55;
+}
+.feedback-panel h2 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -.045em;
+}
+.feedback-panel p { font-size: 1rem; line-height: 1.6; }
+.result-panel h1 { font-size: clamp(2.6rem, 7vw, 4.8rem); }
+.final-score {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -.065em;
+}
+.performance-rating {
+  font-family: var(--font-body);
+  font-size: .82rem !important;
+  font-weight: 700 !important;
+  letter-spacing: .025em !important;
+}
+.result-stat span {
+  font-family: var(--font-body);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .035em;
+  color: #9ca8bf;
+}
+.result-stat b {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -.035em;
+}
+.best-line {
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .035em;
+  color: #aab4c9;
+}
+.secondary-btn {
+  background: rgba(28, 34, 50, .9);
+  color: #d2d8e6;
+  border-color: rgba(190, 199, 226, .14);
+}
+.secondary-btn:hover {
+  background: #262d43;
+  border-color: rgba(184, 173, 255, .55);
+}
+@media (max-width: 650px) {
+  .arcade-home, .play-shell { padding: 18px 16px 24px; }
+  .hero-copy { padding: 48px 0 32px; }
+  .hero-copy h1 { font-size: clamp(2.85rem, 13vw, 4.3rem); }
+  .mode-card, .mode-card:nth-child(4) { min-height: 164px; padding: 17px; }
+  .mode-name { font-size: .98rem; }
+  .mode-tagline { font-size: .82rem; }
+  .arena { border-radius: 19px; padding: 17px; }
+  .arena-meta, .game-stats { font-size: .69rem; }
+  .arcade-footer { font-size: .61rem; letter-spacing: .015em; }
+}
+@media (max-width: 380px) {
+  .hero-copy h1 { font-size: 2.55rem; }
+  .brand-name { font-size: .9rem; }
+  .mode-card, .mode-card:nth-child(4) { padding: 14px; }
+  .mode-name { font-size: .9rem; }
+}
